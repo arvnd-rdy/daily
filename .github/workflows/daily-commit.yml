@@ -1,12 +1,12 @@
 name: 🤖 Daily “Green Square” Commit
 
-# Now this workflow will run:
-# 1) Manually, when you click “Run workflow” (workflow_dispatch)
-# 2) Automatically at 02:00 UTC every day (cron)
+permissions:
+  contents: write            # ← Make sure Actions can push commits
+
 on:
-  workflow_dispatch:    # ← allows manual runs
+  workflow_dispatch:         # ← Allows manual trigger
   schedule:
-    - cron: '0 2 * * *'
+    - cron: '0 2 * * *'      # ← Runs daily at 02:00 UTC
 
 jobs:
   add-timestamp:
@@ -15,7 +15,7 @@ jobs:
       - name: Check out the repo
         uses: actions/checkout@v4
         with:
-          persist-credentials: true
+          persist-credentials: true   # ← Ensures the runner uses GITHUB_TOKEN
 
       - name: Update timestamp file
         run: |
