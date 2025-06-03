@@ -1,0 +1,28 @@
+name: 🤖 Daily “Green Square” Commit
+
+# Run once every day at, say, 02:00 UTC (22:00 EDT/EST in Toronto is 02:00 UTC)
+on:
+  schedule:
+    - cron: '0 2 * * *'
+
+jobs:
+  add-timestamp:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out the repo  
+        uses: actions/checkout@v4
+        with:
+          # This ensures the action can push back to default branch
+          persist-credentials: true
+
+      - name: Update timestamp file  
+        run: |
+          echo "Last commit run: $(date -u)" > daily-commit.txt
+
+      - name: Commit & push change  
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add daily-commit.txt
+          git commit -m "chore: auto-update timestamp [skip ci]" || echo "No changes to commit"
+          git push origin HEAD:$(git rev-parse --abbrev-ref HEAD)
