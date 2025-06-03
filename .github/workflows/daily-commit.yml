@@ -1,7 +1,10 @@
 name: 🤖 Daily “Green Square” Commit
 
-# Run once every day at, say, 02:00 UTC (22:00 EDT/EST in Toronto is 02:00 UTC)
+# Now this workflow will run:
+# 1) Manually, when you click “Run workflow” (workflow_dispatch)
+# 2) Automatically at 02:00 UTC every day (cron)
 on:
+  workflow_dispatch:    # ← allows manual runs
   schedule:
     - cron: '0 2 * * *'
 
@@ -9,17 +12,16 @@ jobs:
   add-timestamp:
     runs-on: ubuntu-latest
     steps:
-      - name: Check out the repo  
+      - name: Check out the repo
         uses: actions/checkout@v4
         with:
-          # This ensures the action can push back to default branch
           persist-credentials: true
 
-      - name: Update timestamp file  
+      - name: Update timestamp file
         run: |
           echo "Last commit run: $(date -u)" > daily-commit.txt
 
-      - name: Commit & push change  
+      - name: Commit & push change
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
