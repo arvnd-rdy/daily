@@ -1,12 +1,12 @@
 name: 🤖 Daily “Green Square” Commit
 
 permissions:
-  contents: write            # ← Make sure Actions can push commits
+  contents: write
 
 on:
-  workflow_dispatch:         # ← Allows manual trigger
+  workflow_dispatch:
   schedule:
-    - cron: '0 2 * * *'      # ← Runs daily at 02:00 UTC
+    - cron: '0 2 * * *'  # runs daily at 02:00 UTC
 
 jobs:
   add-timestamp:
@@ -15,16 +15,16 @@ jobs:
       - name: Check out the repo
         uses: actions/checkout@v4
         with:
-          persist-credentials: true   # ← Ensures the runner uses GITHUB_TOKEN
+          persist-credentials: true
 
       - name: Update timestamp file
         run: |
           echo "Last commit run: $(date -u)" > daily-commit.txt
 
-      - name: Commit & push change
+      - name: Commit & push change as you
         run: |
-          git config user.name "github-actions[bot]"
-          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git config user.name "ANUGU-ARAVIND-REDDY"
+          git config user.email "anuguarvindreddy456@gmail.com"
           git add daily-commit.txt
           git commit -m "chore: auto-update timestamp [skip ci]" || echo "No changes to commit"
           git push origin HEAD:$(git rev-parse --abbrev-ref HEAD)
